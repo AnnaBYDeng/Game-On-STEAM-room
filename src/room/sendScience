@@ -1,0 +1,43 @@
+var sendRoomChange = function(conn, target, username, logger, content, user, rooms)
+{
+  logger.debug("Target \"" + target + "\" asked for examination.")
+  var sendTarget = target
+  var sendMessageType = "player"
+  var messageObject = {
+    type: "event",
+    bookmark: 2223,
+    content: {
+    }
+  }
+
+  messageObject.content[target] = "We having nothing in here to really examine."
+  logger.debug("HERE BEFORE")
+  logger.debug(Object.keys(rooms))
+  logger.debug("HERE AFTER")
+  if ( content.substr(1, 6) == "ENTER " ) {
+	  if(user.loc == "MAIN"){
+		  
+		  for (room in rooms) {
+			  logger.debug(room)
+			  if(room == content.substr(7, room.length)){
+				user.loc = room;  
+			  }
+		  }
+				
+		if(user.loc != "MAIN"){
+			messageObject.content[target] = "You enter the " + user.loc + " room. " + rooms[user.loc].description
+		}
+	  }
+	  
+	  
+  }
+  user.loc = "";
+  
+  var messageToSend = sendMessageType + "," +
+            sendTarget + "," +
+            JSON.stringify(messageObject)
+
+  conn.sendUTF(messageToSend)
+}
+
+module.exports = sendRoomChange;
