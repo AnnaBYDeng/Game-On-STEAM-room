@@ -1,3 +1,4 @@
+//balta was here
 var parseGoCommand = function(conn, target, username, content, doors, logger)
 {
   var exitName = content.substr(4)
